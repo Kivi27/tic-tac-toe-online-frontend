@@ -1,6 +1,37 @@
+:root {
+    --card-color: #d3d3d3;
+}
+
 .wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+.rooms {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px 10px;
+}
+
+.room {
+    width: 200px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    background-color: var(--card-color);
+    border-radius: 10px;
+}
+
+.room__join {
+    width: 50%;
+    padding: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
 }
