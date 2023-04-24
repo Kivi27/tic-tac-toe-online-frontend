@@ -3,10 +3,16 @@ import { RoomDto } from '../types/roomDto.type';
 export class RoomCard {
     private readonly view: HTMLElement;
     private room: RoomDto;
+    private clickJoin: () => void;
 
     constructor(room: RoomDto) {
         this.room = room;
+        this.clickJoin = () => {};
         this.view = this.createCard();
+    }
+
+    public setClickJoin(callBack: () => void): void {
+        this.clickJoin = callBack;
     }
 
     public createCard(): HTMLElement {
@@ -22,6 +28,10 @@ export class RoomCard {
         joinButton.textContent = 'Join';
         joinButton.classList.add('room__join');
         room.append(titleRoom, labelCountPlayer, joinButton);
+
+        joinButton.addEventListener('click', () => {
+            this.clickJoin();
+        });
 
         return room;
     }
