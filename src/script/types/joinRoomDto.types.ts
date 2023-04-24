@@ -1,6 +1,7 @@
+import { RoomDto } from './roomDto.type';
 import { PlayerDto } from './playerDto.types';
 
 export type JoinRoomDto = {
-    roomId: string;
+    room: RoomDto;
     player: PlayerDto;
 }
