@@ -14,7 +14,6 @@ socket.on('getPlayer', (player: PlayerDto) => {
 });
 
 socket.on('updateRooms', (dtoRooms: RoomDto[]) => {
-    console.log('uuuuu');
     const roomContainer = document.querySelector('.rooms');
 
     if (!roomContainer) return;
