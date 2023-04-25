@@ -38,3 +38,12 @@
     cursor: pointer;
     border-radius: 5px;
 }
+
+.tic-tac-toe {
+    display: grid;
+    grid-template: repeat(3, 100px) / repeat(3, 100px);
+}
+
+.tic-tac-toe__cell {
+    cursor: pointer;
+}
