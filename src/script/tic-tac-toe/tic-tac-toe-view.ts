@@ -1,5 +1,5 @@
 
-export class TicTacToe {
+export class TicTacToeView {
     private readonly view: HTMLElement;
 
     private readonly countRow = 3;

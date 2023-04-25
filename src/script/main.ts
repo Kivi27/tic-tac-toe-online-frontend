@@ -1,22 +1,22 @@
 import { io } from 'socket.io-client';
-import { RoomDto } from './types/roomDto.type';
+import { Room } from './types/room.type';
 import { RoomCard } from './room-card/room-card';
-import { PlayerDto } from './types/playerDto.types';
-import { JoinRoomDto } from './types/joinRoomDto.types';
-import { TicTacToe } from './tic-tac-toe/tic-tac-toe';
-import { TicTacToeDto } from './types/ticTacToeDto.types';
+import { Player } from './types/player.types';
+import { JoinRoom } from './types/joinRoom.types';
+import { TicTacToeView } from './tic-tac-toe/tic-tac-toe-view';
+import { TicTacToe } from './types/ticTacToe.types';
 
 const socket = io('http://localhost:3000');
 
 let roomCards: RoomCard[] = [];
-let currentPlayer: PlayerDto;
-const ticTacToe: TicTacToe = new TicTacToe();
+let currentPlayer: Player;
+const ticTacToe = new TicTacToeView();
 
-socket.on('getPlayer', (player: PlayerDto) => {
+socket.on('getPlayer', (player: Player) => {
     currentPlayer = player;
 });
 
-socket.on('updateRooms', (dtoRooms: RoomDto[]) => {
+socket.on('updateRooms', (dtoRooms: Room[]) => {
     const roomContainer = document.querySelector('.rooms');
 
     if (!roomContainer) return;
@@ -24,12 +24,12 @@ socket.on('updateRooms', (dtoRooms: RoomDto[]) => {
     roomContainer.replaceChildren();
     roomCards = [];
 
-    dtoRooms.forEach((dtoRoom: RoomDto) => {
+    dtoRooms.forEach((dtoRoom: Room) => {
         const roomCard = new RoomCard(dtoRoom);
         roomContainer.appendChild(roomCard.getView());
         roomCard.setClickJoin(() => {
 
-            const joinRoomDto: JoinRoomDto = {
+            const joinRoomDto: JoinRoom = {
                 player: currentPlayer,
                 room: dtoRoom,
             };
@@ -40,7 +40,7 @@ socket.on('updateRooms', (dtoRooms: RoomDto[]) => {
     });
 });
 
-socket.on('showTicTacToe', (ticTacToeDto: TicTacToeDto) => {
+socket.on('showTicTacToe', (ticTacToeDto: TicTacToe) => {
     console.log(ticTacToeDto);
     showTicTacToe();
 });

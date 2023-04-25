@@ -1,5 +1,5 @@
 
-export type TicTacToeDto = {
+export type TicTacToe = {
     id: string;
     countRow: number;
     countColumn: number;

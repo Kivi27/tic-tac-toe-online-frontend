@@ -1,11 +1,11 @@
-import { RoomDto } from '../types/roomDto.type';
+import { Room } from '../types/room.type';
 
 export class RoomCard {
     private readonly view: HTMLElement;
-    private room: RoomDto;
+    private room: Room;
     private clickJoin: () => void;
 
-    constructor(room: RoomDto) {
+    constructor(room: Room) {
         this.room = room;
         this.clickJoin = () => {};
         this.view = this.createCard();
