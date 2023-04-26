@@ -6,6 +6,7 @@ import { JoinRoom } from './types/joinRoom.types';
 import { TicTacToeComponent } from './components/tic-tac-toe/tic-tac-toe.component';
 import { TicTacToe } from './types/ticTacToe.types';
 import { ClickCell } from './types/clickCell';
+import { ModalWinnerComponent } from './components/modal-winner/modal-winner.component';
 
 const socket = io('http://localhost:3000');
 
@@ -54,7 +55,13 @@ socket.on('getCurrentRoom', (currentRoom) => {
 });
 
 socket.on('winner', (player: Player) => {
-   console.log(player);
+    const body = document.querySelector('body');
+
+    const winnerLabel = `winner with Symbol: ${player.symbol}`;
+    const buttonLabel = 'OK';
+
+    const modalWinner = new ModalWinnerComponent(winnerLabel, buttonLabel, () => location.reload());
+    body?.append(modalWinner.getView());
 });
 
 socket.on('playerExitLobby', () => location.reload());
