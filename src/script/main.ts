@@ -45,10 +45,15 @@ socket.on('createOrUpdateTicTacToe', (ticTacToeDto: TicTacToe) => {
     createOrUpdateTicTacToe(ticTacToeDto);
 });
 
-socket.on('getCurrentRoom', (ccRoom) => {
-    console.log(ccRoom);
-    currentRoomId = ccRoom;
+socket.on('getCurrentRoom', (currentRoom) => {
+    currentRoomId = currentRoom;
 });
+
+socket.on('winner', (player: Player) => {
+   console.log(player);
+});
+
+socket.on('playerExitLobby', () => location.reload());
 
 function createOrUpdateTicTacToe(ticTacToeDto: TicTacToe) {
     const container = document.querySelector('.wrapper__container');
