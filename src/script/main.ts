@@ -1,16 +1,17 @@
 import { io } from 'socket.io-client';
 import { Room } from './types/room.type';
-import { RoomCard } from './components/room-card/room-card';
+import { RoomCardComponent } from './components/room-card/room-card.component';
 import { Player } from './types/player.types';
 import { JoinRoom } from './types/joinRoom.types';
-import { TicTacToeView } from './components/tic-tac-toe/tic-tac-toe-view';
+import { TicTacToeComponent } from './components/tic-tac-toe/tic-tac-toe.component';
 import { TicTacToe } from './types/ticTacToe.types';
+import { ClickCell } from './types/clickCell';
 
 const socket = io('http://localhost:3000');
 
-let roomCards: RoomCard[] = [];
+let roomCards: RoomCardComponent[] = [];
+let currentRoomId: string;
 let currentPlayer: Player;
-const ticTacToe = new TicTacToeView();
 
 socket.on('getPlayer', (player: Player) => {
     currentPlayer = player;
@@ -25,7 +26,7 @@ socket.on('updateRooms', (dtoRooms: Room[]) => {
     roomCards = [];
 
     dtoRooms.forEach((dtoRoom: Room) => {
-        const roomCard = new RoomCard(dtoRoom);
+        const roomCard = new RoomCardComponent(dtoRoom);
         roomContainer.appendChild(roomCard.getView());
         roomCard.setClickJoin(() => {
 
@@ -40,15 +41,31 @@ socket.on('updateRooms', (dtoRooms: Room[]) => {
     });
 });
 
-socket.on('showTicTacToe', (ticTacToeDto: TicTacToe) => {
-    console.log(ticTacToeDto);
-    showTicTacToe();
+socket.on('createOrUpdateTicTacToe', (ticTacToeDto: TicTacToe) => {
+    createOrUpdateTicTacToe(ticTacToeDto);
 });
 
-function showTicTacToe() {
+socket.on('getCurrentRoom', (ccRoom) => {
+    console.log(ccRoom);
+    currentRoomId = ccRoom;
+});
+
+function createOrUpdateTicTacToe(ticTacToeDto: TicTacToe) {
     const container = document.querySelector('.wrapper__container');
 
     if (!container) return;
+
+    const ticTacToe = new TicTacToeComponent(ticTacToeDto, (selectedRow: number, selectedColumn: number) => {
+        const clickCell: ClickCell = {
+            ticTacToeId: ticTacToe.getId(),
+            playerId: currentPlayer.id,
+            roomId: currentRoomId,
+            selectRow: selectedRow,
+            selectColumn: selectedColumn,
+        };
+
+        socket.emit('clickCell', clickCell);
+    });
 
     container.replaceChildren();
     container.appendChild(ticTacToe.getView());

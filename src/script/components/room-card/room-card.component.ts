@@ -1,6 +1,6 @@
 import { Room } from '../../types/room.type';
 
-export class RoomCard {
+export class RoomCardComponent {
     private readonly view: HTMLElement;
     private room: Room;
     private clickJoin: () => void;
