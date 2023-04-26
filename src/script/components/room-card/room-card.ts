@@ -1,4 +1,4 @@
-import { Room } from '../types/room.type';
+import { Room } from '../../types/room.type';
 
 export class RoomCard {
     private readonly view: HTMLElement;

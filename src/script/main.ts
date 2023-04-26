@@ -1,9 +1,9 @@
 import { io } from 'socket.io-client';
 import { Room } from './types/room.type';
-import { RoomCard } from './room-card/room-card';
+import { RoomCard } from './components/room-card/room-card';
 import { Player } from './types/player.types';
 import { JoinRoom } from './types/joinRoom.types';
-import { TicTacToeView } from './tic-tac-toe/tic-tac-toe-view';
+import { TicTacToeView } from './components/tic-tac-toe/tic-tac-toe-view';
 import { TicTacToe } from './types/ticTacToe.types';
 
 const socket = io('http://localhost:3000');
