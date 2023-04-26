@@ -42,10 +42,14 @@ socket.on('updateRooms', (dtoRooms: Room[]) => {
 });
 
 socket.on('createOrUpdateTicTacToe', (ticTacToeDto: TicTacToe) => {
+    console.log('tic tac toe');
+    console.log(ticTacToeDto);
     createOrUpdateTicTacToe(ticTacToeDto);
 });
 
 socket.on('getCurrentRoom', (currentRoom) => {
+    console.log('room id');
+    console.log(currentRoom);
     currentRoomId = currentRoom;
 });
 
@@ -69,6 +73,8 @@ function createOrUpdateTicTacToe(ticTacToeDto: TicTacToe) {
             selectColumn: selectedColumn,
         };
 
+        console.log('clickCell');
+        console.log(clickCell);
         socket.emit('clickCell', clickCell);
     });
 
