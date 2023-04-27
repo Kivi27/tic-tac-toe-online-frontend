@@ -1,16 +1,18 @@
-import { TicTacToe } from '../../types/ticTacToe.types';
+import { TicTacToe } from '../../types/tic-tac-toe.types';
 
 export class TicTacToeComponent {
     private readonly id: string;
     private readonly view: HTMLElement;
-    private readonly countRow: number = 3;
-    private readonly countColumn: number = 3;
+    private readonly countRow: number;
+    private readonly countColumn: number;
 
     constructor(
         private readonly ticTacToeDto: TicTacToe,
         private readonly click: (xCoordinate: number, yCoordinate: number) => void,
     ) {
         this.id = ticTacToeDto.id;
+        this.countRow = ticTacToeDto.countRow;
+        this.countColumn = ticTacToeDto.countColumn;
         this.view = this.createView(ticTacToeDto);
     }
 
@@ -32,9 +34,7 @@ export class TicTacToeComponent {
                 buttonCell.textContent = ticTacToe.field[i][j];
                 buttonCell.classList.add('tic-tac-toe__cell');
 
-                buttonCell.addEventListener('click', () => {
-                   this.click(i, j);
-                });
+                buttonCell.addEventListener('click', () => this.click(i, j));
 
                 container.appendChild(buttonCell);
             }

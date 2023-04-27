@@ -1,4 +1,4 @@
-export type ClickCell = {
+export type ClickCellTypes = {
     ticTacToeId: string;
     roomId: string;
     playerId: string;

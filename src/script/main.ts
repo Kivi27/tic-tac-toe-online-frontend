@@ -2,10 +2,10 @@ import { io } from 'socket.io-client';
 import { Room } from './types/room.type';
 import { RoomCardComponent } from './components/room-card/room-card.component';
 import { Player } from './types/player.types';
-import { JoinRoom } from './types/joinRoom.types';
+import { JoinRoomTypes } from './types/join-room.types';
 import { TicTacToeComponent } from './components/tic-tac-toe/tic-tac-toe.component';
-import { TicTacToe } from './types/ticTacToe.types';
-import { ClickCell } from './types/clickCell';
+import { TicTacToe } from './types/tic-tac-toe.types';
+import { ClickCellTypes } from './types/click-cell.types';
 import { ModalWinnerComponent } from './components/modal-winner/modal-winner.component';
 
 const socket = io('http://localhost:3000');
@@ -14,9 +14,10 @@ let roomCards: RoomCardComponent[] = [];
 let currentRoomId: string;
 let currentPlayer: Player;
 
-socket.on('getPlayer', (player: Player) => {
-    currentPlayer = player;
-});
+socket.on('getPlayer', (player: Player) => currentPlayer = player);
+socket.on('getCurrentRoom', (currentRoom) => currentRoomId = currentRoom);
+socket.on('playerExitLobby', () => location.reload());
+socket.on('createOrUpdateTicTacToe', (ticTacToeDto: TicTacToe) => createOrUpdateTicTacToe(ticTacToeDto));
 
 socket.on('updateRooms', (dtoRooms: Room[]) => {
     const roomContainer = document.querySelector('.rooms');
@@ -30,8 +31,7 @@ socket.on('updateRooms', (dtoRooms: Room[]) => {
         const roomCard = new RoomCardComponent(dtoRoom);
         roomContainer.appendChild(roomCard.getView());
         roomCard.setClickJoin(() => {
-
-            const joinRoomDto: JoinRoom = {
+            const joinRoomDto: JoinRoomTypes = {
                 player: currentPlayer,
                 room: dtoRoom,
             };
@@ -40,18 +40,6 @@ socket.on('updateRooms', (dtoRooms: Room[]) => {
 
         roomCards.push(roomCard);
     });
-});
-
-socket.on('createOrUpdateTicTacToe', (ticTacToeDto: TicTacToe) => {
-    console.log('tic tac toe');
-    console.log(ticTacToeDto);
-    createOrUpdateTicTacToe(ticTacToeDto);
-});
-
-socket.on('getCurrentRoom', (currentRoom) => {
-    console.log('room id');
-    console.log(currentRoom);
-    currentRoomId = currentRoom;
 });
 
 socket.on('winner', (player: Player) => {
@@ -64,15 +52,13 @@ socket.on('winner', (player: Player) => {
     body?.append(modalWinner.getView());
 });
 
-socket.on('playerExitLobby', () => location.reload());
-
 function createOrUpdateTicTacToe(ticTacToeDto: TicTacToe) {
     const container = document.querySelector('.wrapper__container');
 
     if (!container) return;
 
     const ticTacToe = new TicTacToeComponent(ticTacToeDto, (selectedRow: number, selectedColumn: number) => {
-        const clickCell: ClickCell = {
+        const clickCell: ClickCellTypes = {
             ticTacToeId: ticTacToe.getId(),
             playerId: currentPlayer.id,
             roomId: currentRoomId,
@@ -80,8 +66,6 @@ function createOrUpdateTicTacToe(ticTacToeDto: TicTacToe) {
             selectColumn: selectedColumn,
         };
 
-        console.log('clickCell');
-        console.log(clickCell);
         socket.emit('clickCell', clickCell);
     });
 
