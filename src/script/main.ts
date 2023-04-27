@@ -8,7 +8,7 @@ import { TicTacToe } from './types/tic-tac-toe.types';
 import { ClickCellTypes } from './types/click-cell.types';
 import { ModalWinnerComponent } from './components/modal-winner/modal-winner.component';
 
-const socket = io('https://tic-tac-toe-online-pu7u.onrender.com:3000');
+const socket = io('https://tic-tac-toe-online-e4x0.onrender.com:3000');
 
 let roomCards: RoomCardComponent[] = [];
 let currentRoomId: string;
